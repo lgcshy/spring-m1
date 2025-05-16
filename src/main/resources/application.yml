@@ -35,12 +35,39 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
+# JWT配置
+jwt:
+  secret: ${JWT_SECRET:your-secret-key-should-be-very-long-and-secure}
+  expiration: 86400000  # 24小时，单位毫秒
+
 # MinIO配置
 minio:
   endpoint: http://10.10.102.106:9000
   accessKey: minioadmin
   secretKey: minioadmin
   bucket: spring-m1
+
+# Swagger配置
+springdoc:
+  api-docs:
+    enabled: true  # 是否启用API文档
+  swagger-ui:
+    enabled: true  # 是否启用Swagger UI
+    path: /swagger-ui.html  # Swagger UI的访问路径
+  packages-to-scan: com.example.springm1.controller  # 要扫描的包路径
+
+# 自定义Swagger配置
+swagger:
+  enabled: true  # 是否启用Swagger
+  title: Spring Boot API
+  description: Spring Boot REST API Documentation
+  version: 1.0.0
+  contact:
+    name: Developer
+    email: developer@example.com
+    url: https://example.com
+  license: Apache 2.0
+  license-url: https://www.apache.org/licenses/LICENSE-2.0
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml

@@ -4,8 +4,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,11 +21,16 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    // 密钥（实际应用中应该放在配置文件中）
-    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    @Value("${jwt.secret:your-secret-key-should-be-very-long-and-secure}")
+    private String secretString;
     
-    // 过期时间（毫秒，24小时）
-    private static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000;
+    @Value("${jwt.expiration:86400000}")
+    private long expirationTime;
+    
+    private Key getSigningKey() {
+        byte[] keyBytes = secretString.getBytes(StandardCharsets.UTF_8);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
 
     /**
      * 从token中获取用户名
@@ -60,7 +68,7 @@ public class JwtUtil {
      */
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -85,6 +93,16 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         return doGenerateToken(claims, username);
     }
+    
+    /**
+     * 为UserDetails生成token
+     * @param userDetails 用户详情
+     * @return JWT token
+     */
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        return doGenerateToken(claims, userDetails.getUsername());
+    }
 
     /**
      * 生成token
@@ -97,8 +115,8 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SECRET_KEY)
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(getSigningKey())
                 .compact();
     }
 
@@ -111,5 +129,29 @@ public class JwtUtil {
     public Boolean validateToken(String token, String username) {
         final String tokenUsername = getUsernameFromToken(token);
         return (tokenUsername.equals(username) && !isTokenExpired(token));
+    }
+    
+    /**
+     * 验证token是否有效（不检查用户名）
+     * @param token JWT token
+     * @return 是否有效
+     */
+    public Boolean validateToken(String token) {
+        try {
+            return !isTokenExpired(token);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
+    /**
+     * 验证token是否与用户匹配且未过期
+     * @param token JWT token
+     * @param userDetails 用户详情
+     * @return 是否有效
+     */
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        final String username = getUsernameFromToken(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 } 
