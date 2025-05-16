@@ -23,6 +23,11 @@ public class User implements Serializable {
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+    
+    /**
+     * UUID唯一标识符
+     */
+    private String uuid;
 
     /**
      * 用户名

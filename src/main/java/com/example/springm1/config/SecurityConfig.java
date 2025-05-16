@@ -44,7 +44,7 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(authorize -> authorize
                 // 允许公共访问的API
-                .requestMatchers("/api/users/login", "/api/users/register").permitAll()
+                .requestMatchers("/api/users/login", "/api/users/register", "/api/users/uuid/**").permitAll()
                 // 允许邮件API访问
                 .requestMatchers("/api/email/**").permitAll()
                 // 允许文件API访问

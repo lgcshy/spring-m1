@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 用户控制器
@@ -59,6 +60,9 @@ public class UserController {
         user.setCreateTime(LocalDateTime.now());
         user.setUpdateTime(LocalDateTime.now());
         user.setDeleted(0); // 未删除
+        
+        // 生成并设置UUID
+        user.setUuid(UUID.randomUUID().toString());
         
         // 使用Spring Security的密码编码器加密密码
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -127,6 +131,30 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(ApiResponse.error("用户不存在"));
             }
+            
+            return ResponseEntity.ok(ApiResponse.success(user));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("获取用户信息失败: " + e.getMessage()));
+        }
+    }
+    
+    /**
+     * 根据UUID获取用户信息
+     * @param uuid 用户UUID
+     * @return 用户信息
+     */
+    @GetMapping("/uuid/{uuid}")
+    public ResponseEntity<Map<String, Object>> getUserByUuid(@PathVariable String uuid) {
+        try {
+            User user = userService.getUserByUuid(uuid);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(ApiResponse.error("用户不存在"));
+            }
+            
+            // 出于安全考虑，不返回密码
+            user.setPassword(null);
             
             return ResponseEntity.ok(ApiResponse.success(user));
         } catch (Exception e) {

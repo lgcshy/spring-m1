@@ -18,6 +18,7 @@
 - ✅ Spring Security
 - ✅ 数据库迁移(Flyway)
 - ✅ 好友关系管理
+- ✅ 用户UUID唯一标识
 
 ## 项目结构说明
 - `entity`: 实体类，如User、Friend
@@ -49,12 +50,16 @@
   - 支持发送好友请求
   - 支持接受或拒绝好友请求
   - 支持查看好友列表和好友请求列表
+- **用户UUID唯一标识**: 为每个用户添加UUID字段
+  - 注册时自动生成UUID
+  - 提供通过UUID查询用户的API
 
 ## API接口
 ### 用户相关
 - `POST /api/users/register`: 用户注册
 - `POST /api/users/login`: 用户登录
 - `GET /api/users/info`: 获取用户信息（需要token）
+- `GET /api/users/uuid/{uuid}`: 通过UUID获取用户信息（公开访问）
 - `POST /api/users/logout`: 退出登录（需要token）
 
 ### 缓存相关
@@ -90,6 +95,7 @@
 ## 数据库迁移
 数据库迁移脚本位于 `src/main/resources/db/migration/` 目录：
 - `V1__Create_friends_table.sql`: 创建好友关系表
+- `V2__Add_uuid_to_users_table.sql`: 为用户表添加UUID字段
 
 ## 启动项目
 1. 确保已安装MySQL和Redis

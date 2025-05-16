@@ -16,4 +16,11 @@ public interface UserService extends IService<User> {
      * @return 用户对象
      */
     User getUserByUsername(String username);
+    
+    /**
+     * 根据UUID查询用户
+     * @param uuid UUID
+     * @return 用户对象
+     */
+    User getUserByUuid(String uuid);
 } 
