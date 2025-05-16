@@ -13,6 +13,8 @@
 - ✅ redis的使用
 - ✅ jwt
 - ✅ 序列化
+- ✅ 邮件发送
+- ✅ MinIO文件存储
 
 ## 项目结构说明
 - `entity`: 实体类，如User
@@ -27,6 +29,8 @@
 - Redis: 使用RedisTemplate进行缓存操作，配置了Jackson序列化
 - JWT: 实现了JWT令牌的生成和验证
 - 序列化: 在RedisConfig中配置了Jackson序列化器
+- 邮件: 实现了简单文本邮件、HTML邮件和带附件的邮件发送
+- 文件存储: 使用MinIO实现文件上传、下载、删除和列表功能
 
 ## API接口
 ### 用户相关
@@ -39,6 +43,18 @@
 - `POST /api/cache/set`: 设置缓存
 - `GET /api/cache/get`: 获取缓存
 - `DELETE /api/cache/delete`: 删除缓存
+
+### 邮件相关
+- `POST /api/email/simple`: 发送简单文本邮件
+- `POST /api/email/html`: 发送HTML格式邮件
+- `POST /api/email/attachment`: 发送带附件的邮件
+
+### 文件存储相关
+- `POST /api/files/upload`: 上传单个文件
+- `POST /api/files/upload/multiple`: 上传多个文件
+- `DELETE /api/files/delete`: 删除文件
+- `GET /api/files/url`: 获取文件临时访问URL
+- `GET /api/files/list`: 列出文件
 
 ## 安全机制
 - 使用JWT实现无状态的身份验证
@@ -53,6 +69,7 @@
 
 ## 启动项目
 1. 确保已安装MySQL和Redis
-2. 执行数据库初始化脚本
-3. 修改 `application.yml` 中的数据库和Redis配置
-4. 运行 `SpringM1Application.java` 启动项目
+2. 确保已安装MinIO（或使用远程MinIO服务）
+3. 执行数据库初始化脚本
+4. 修改 `application.yml` 中的数据库、Redis和MinIO配置
+5. 运行 `SpringM1Application.java` 启动项目

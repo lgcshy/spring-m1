@@ -87,6 +87,13 @@
             <version>2.0.1</version>
             <scope>test</scope>
         </dependency>
+        
+        <!-- MinIO对象存储 -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.5.9</version>
+        </dependency>
     </dependencies>
 
     <build>

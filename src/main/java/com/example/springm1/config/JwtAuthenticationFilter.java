@@ -34,7 +34,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/api/auth/error",
             "/api/email/simple",
             "/api/email/html",
-            "/api/email/attachment"
+            "/api/email/attachment",
+            "/api/files/upload",
+            "/api/files/upload/multiple",
+            "/api/files/list",
+            "/api/files/url"
     );
 
     @Override
