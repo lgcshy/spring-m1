@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * 用户实体类
  */
 @Data
-@TableName("user")
+@TableName("users")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
