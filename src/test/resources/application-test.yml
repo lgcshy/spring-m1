@@ -13,22 +13,22 @@ spring:
       host: 10.10.102.106
       port: 6379
       database: 4
-      # password: # uncomment and set if your Redis requires authentication
       
-  # 邮件配置
+  # 测试环境邮件配置
   mail:
-    host: mail.sonoscape.net
-    port: 465
-    username: iccm_test
-    password: Kaili@2021
+    host: localhost
+    port: 3025
+    username: test@example.com
+    password: test
     properties:
       mail:
         smtp:
-          auth: true
+          auth: false
           starttls:
-            enable: true
-            required: true
+            enable: false
+            required: false
 
+# 其他配置保持与主配置相同
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.example.springm1.entity

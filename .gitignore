@@ -1,8 +1,16 @@
-HELP.md
+### Maven ###
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
 
 ### STS ###
 .apt_generated
@@ -32,8 +40,35 @@ build/
 ### VS Code ###
 .vscode/
 
-### Logs ###
+### Java ###
+# 编译后的类文件
+*.class
+
+# 日志文件
 *.log
+
+# BlueJ 文件
+*.ctxt
+
+# 移动工具
+.mtj.tmp/
+
+# 打包文件
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# 虚拟机崩溃日志
+hs_err_pid*
+replay_pid*
+
+### 系统文件 ###
+.DS_Store
+Thumbs.db
 
 ### Local configuration file ###
 application-local.yml

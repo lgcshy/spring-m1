@@ -25,6 +25,7 @@ public class WebConfig {
         FilterRegistrationBean<JwtAuthenticationFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(jwtAuthenticationFilter);
         registration.addUrlPatterns("/api/*");
+        registration.addInitParameter("excludedPaths", "/api/email/*");
         registration.setName("jwtAuthenticationFilter");
         registration.setOrder(1);
         return registration;
