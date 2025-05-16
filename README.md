@@ -16,15 +16,18 @@
 - ✅ 邮件发送
 - ✅ MinIO文件存储
 - ✅ Spring Security
+- ✅ 数据库迁移(Flyway)
+- ✅ 好友关系管理
 
 ## 项目结构说明
-- `entity`: 实体类，如User
+- `entity`: 实体类，如User、Friend
 - `mapper`: MyBatis-Plus的Mapper接口
 - `service`: 服务层接口及实现
 - `util`: 工具类，如JwtUtil
 - `config`: 配置类，如RedisConfig、SecurityConfig
 - `controller`: 控制器层，处理HTTP请求
 - `security`: 安全相关类，如JWT过滤器和用户详情服务
+- `db/migration`: Flyway数据库迁移脚本
 
 ## 功能实现
 - **MyBatis-Plus**: 实现了基本的CRUD操作
@@ -39,6 +42,13 @@
   - 自定义UserDetailsService加载用户信息
   - 配置了BCryptPasswordEncoder进行密码加密
   - 配置了不需要认证的路径，如登录、注册、Swagger UI等
+- **数据库迁移**: 使用Flyway管理数据库版本和迁移
+  - 自动执行SQL脚本创建或更新数据库结构
+  - 支持版本控制和回滚
+- **好友关系管理**: 实现了好友关系的增删改查
+  - 支持发送好友请求
+  - 支持接受或拒绝好友请求
+  - 支持查看好友列表和好友请求列表
 
 ## API接口
 ### 用户相关
@@ -63,6 +73,13 @@
 - `DELETE /api/files/delete/{filename}`: 删除文件
 - `GET /api/files/list`: 获取文件列表
 
+### 好友关系相关
+- `POST /api/friends/request`: 发送好友请求
+- `POST /api/friends/accept`: 接受好友请求
+- `POST /api/friends/reject`: 拒绝好友请求
+- `GET /api/friends/list`: 获取好友列表
+- `GET /api/friends/requests`: 获取好友请求列表
+
 ## 安全配置
 - 使用Spring Security进行安全控制
 - 基于JWT的无状态认证
@@ -70,15 +87,13 @@
 - 配置了公开访问的API路径
 - 集成Swagger UI，方便API文档查看和测试
 
-## 数据库
-数据库初始化脚本位于 `src/main/resources/db/` 目录：
-- `schema.sql`: 数据库表结构
-- `data.sql`: 测试数据
+## 数据库迁移
+数据库迁移脚本位于 `src/main/resources/db/migration/` 目录：
+- `V1__Create_friends_table.sql`: 创建好友关系表
 
 ## 启动项目
 1. 确保已安装MySQL和Redis
 2. 确保已安装MinIO（或使用远程MinIO服务）
-3. 执行数据库初始化脚本
-4. 修改 `application.yml` 中的数据库、Redis和MinIO配置
-5. 运行 `mvn spring-boot:run` 启动应用
-6. 访问 `http://localhost:8080/swagger-ui/index.html` 查看API文档
+3. 修改 `application.yml` 中的数据库、Redis和MinIO配置
+4. 运行 `mvn spring-boot:run` 启动应用
+5. 访问 `http://localhost:8080/swagger-ui/index.html` 查看API文档
