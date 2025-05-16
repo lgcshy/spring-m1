@@ -1,5 +1,5 @@
 ALTER TABLE `users`
-ADD COLUMN uuid VARCHAR(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT 'UUID唯一标识符';
+ADD COLUMN uuid VARCHAR(36) CHARACTER SET utf8mb4 COMMENT 'UUID唯一标识符';
 
 -- Update existing users with random UUIDs
 UPDATE `users`
